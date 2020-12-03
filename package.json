@@ -1,0 +1,20 @@
+{
+  "name": "lambda-flame",
+  "version": "1.0.0",
+  "description": "",
+  "main": "handler.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MatteoGioioso/lambda-flame-js.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/MatteoGioioso/lambda-flame-js/issues"
+  },
+  "homepage": "https://github.com/MatteoGioioso/lambda-flame-js#readme"
+}

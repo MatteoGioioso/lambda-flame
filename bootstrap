@@ -1,0 +1,14 @@
+#!/bin/sh
+set -eo pipefail
+# Uncomment the next line to log the executed commands
+#set -x
+echo "[LAMBDA FLAME] Starting custom runtime..."
+if [ -z "$NODE_RUNTIME_PATH" ];
+then
+    echo "NODE_RUNTIME_PATH is not set starting with Node 10.x runtime."
+    pwd
+    export NODE_RUNTIME_PATH=nodejs/node;
+fi
+
+export NODE_PATH=/var/task/node_modules:/var/node_modules:/node_modules:/nodejs/node_modules:/var/runtime:/var/task:/var/runtime/node_modules:/node/node_modules
+exec "$NODE_RUNTIME_PATH" nodejs/index.js
