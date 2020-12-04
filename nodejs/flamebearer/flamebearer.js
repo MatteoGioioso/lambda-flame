@@ -3,9 +3,9 @@
 const fs = require('fs');
 const path = require('path');
 const concat = require('concat-stream');
-// const opn = require('opn');
 const flamebearer = require('./flameBuilder');
 const lambdaRootFolder = process.env.LAMBDA_TASK_ROOT
+const LAMBDA_FLAME_OUTPUT = process.env.LAMBDA_FLAME_OUTPUT
 
 function fuelTheFire(file) {
     return new Promise((resolve, reject) => {
@@ -29,9 +29,9 @@ function fuelTheFire(file) {
             const levels = flamebearer.mergeStacks(stacks);
             console.timeEnd('Processed V8 log in');
 
-            const vizSrc = fs.readFileSync(path.join(lambdaRootFolder, '/nodejs/viz.js'), 'utf8');
+            const vizSrc = fs.readFileSync(path.join(lambdaRootFolder, '/nodejs/flamebearer/viz.js'), 'utf8');
             const src = fs
-                .readFileSync(path.join(lambdaRootFolder, '/nodejs/index.html'), 'utf8')
+                .readFileSync(path.join(lambdaRootFolder, '/nodejs/flamebearer/index.html'), 'utf8')
                 .toString()
                 .split('<script src="viz.js"></script>')
                 .join(`<script>${vizSrc}</script>`)
@@ -43,7 +43,7 @@ function fuelTheFire(file) {
                     `levels = ${JSON.stringify(levels)};\n` +
                     `numTicks = ${stacks.length};`);
 
-            fs.writeFileSync(path.join('/tmp', '/flamegraph.html'), src);
+            fs.writeFileSync(path.join('/tmp', `/${LAMBDA_FLAME_OUTPUT}`, `/flamegraph.html`), src);
             console.log(`Saved to flamegraph.html (${humanFileSize(src.length)}). Opening...`);
             return resolve()
         }))

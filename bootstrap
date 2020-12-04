@@ -10,7 +10,7 @@ fi
 
 export LAMBDA_FLAME_OUTPUT=lambda-flame-output
 
-mkdir /tmp/lambda-flame-output
+mkdir /tmp/"$LAMBDA_FLAME_OUTPUT"
 
 collect() {
     $NODE_RUNTIME_PATH --prof-process --preprocess -j /tmp/"$LAMBDA_FLAME_OUTPUT"/isolate*.log >> /tmp/"$LAMBDA_FLAME_OUTPUT"/isolate-output.json

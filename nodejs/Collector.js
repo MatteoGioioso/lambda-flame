@@ -1,5 +1,5 @@
 const fs = require('fs');
-const flamebearer = require('./flamebearer')
+const flamebearer = require('./flamebearer/flamebearer')
 const S3 = require('aws-sdk/clients/s3')
 const Path = require('path');
 
