@@ -1,4 +1,4 @@
-const http = require('http')
+const http = require('http');
 
 const RUNTIME_PATH = '/2018-06-01/runtime'
 
@@ -33,6 +33,7 @@ async function start() {
 async function tryProcessEvents(handler) {
     try {
         await processEvents(handler)
+        process.exit(0)
     } catch (e) {
         console.error(e)
         return process.exit(1)
@@ -42,7 +43,6 @@ async function tryProcessEvents(handler) {
 async function processEvents(handler) {
     while (true) {
         const { event, context } = await nextInvocation()
-        event.hello = "world"
         let result
         try {
             result = await handler(event, context)
@@ -50,13 +50,11 @@ async function processEvents(handler) {
             await invokeError(e, context)
             continue
         }
-        const callbackUsed = context[CALLBACK_USED]
+        // const callbackUsed = context[CALLBACK_USED]
 
         await invokeResponse(result, context)
-
-        if (callbackUsed && context.callbackWaitsForEmptyEventLoop) {
-            return process.prependOnceListener('beforeExit', () => tryProcessEvents(handler))
-        }
+        console.log("exiting...")
+        return process.prependOnceListener('beforeExit', () => tryProcessEvents(handler))
     }
 }
 
@@ -80,7 +78,6 @@ async function nextInvocation() {
     const deadlineMs = +res.headers['lambda-runtime-deadline-ms']
 
     let context = {
-        sneakyProp: "hello there",
         awsRequestId: res.headers['lambda-runtime-aws-request-id'],
         invokedFunctionArn: res.headers['lambda-runtime-invoked-function-arn'],
         logGroupName: AWS_LAMBDA_LOG_GROUP_NAME,

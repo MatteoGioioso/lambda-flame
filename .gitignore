@@ -4,3 +4,5 @@ output.yaml
 template.yaml
 deploy.sh
 handler.js
+node_modules
+request.http

@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/MatteoGioioso/lambda-flame-js/issues"
   },
-  "homepage": "https://github.com/MatteoGioioso/lambda-flame-js#readme"
+  "homepage": "https://github.com/MatteoGioioso/lambda-flame-js#readme",
+  "dependencies": {
+    "aws-sdk": "^2.803.0",
+    "concat-stream": "^2.0.0"
+  }
 }
