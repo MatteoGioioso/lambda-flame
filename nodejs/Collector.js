@@ -2,6 +2,7 @@ const fs = require('fs');
 const flamebearer = require('./flamebearer/flamebearer')
 const S3 = require('aws-sdk/clients/s3')
 const Path = require('path');
+const {logger} = require('./logger')
 
 const s3Client = new S3();
 
@@ -19,6 +20,7 @@ class Collector {
             });
             fs.rmdirSync(path);
         }
+        logger("/tmp directory is now empty")
     }
 
     async sendToDest(){
@@ -26,13 +28,14 @@ class Collector {
         const data = fs.readFileSync(`${this.OUTPUT_PATH}/flamegraph.html`)
 
         const params = {
-            Bucket: process.env.DEST_BUCKET,
+            Bucket: process.env.LAMBDA_FLAME_DEST_BUCKET,
             Key: `flamegraph_${hash}.html`,
             Body: data,
         };
 
         const res = await s3Client.upload(params).promise()
-        console.log(res)
+        logger("Flamegraph was send to S3")
+        logger(res)
     }
 
     async generateFlameGraph(){

@@ -4,6 +4,7 @@ const fs = require('fs');
 const path = require('path');
 const concat = require('concat-stream');
 const flamebearer = require('./flameBuilder');
+const {logger} = require('../logger')
 const lambdaRootFolder = process.env.LAMBDA_TASK_ROOT
 const LAMBDA_FLAME_OUTPUT = process.env.LAMBDA_FLAME_OUTPUT
 
@@ -18,8 +19,8 @@ function fuelTheFire(file) {
                 // noop
             }
             if (!json.code || !json.ticks) {
-                console.log('Invalid input; expected a V8 log in JSON format. Produce one with:');
-                console.log('node --prof-process --preprocess isolate*.log');
+                logger('Invalid input; expected a V8 log in JSON format. Produce one with:');
+                logger('node --prof-process --preprocess isolate*.log')
                 return;
             }
             console.timeEnd('Parsed JSON in');
@@ -43,16 +44,12 @@ function fuelTheFire(file) {
                     `levels = ${JSON.stringify(levels)};\n` +
                     `numTicks = ${stacks.length};`);
 
-            fs.writeFileSync(path.join('/tmp', `/${LAMBDA_FLAME_OUTPUT}`, `/flamegraph.html`), src);
-            console.log(`Saved to flamegraph.html (${humanFileSize(src.length)}). Opening...`);
+            const folder = path.join('/tmp', `/${LAMBDA_FLAME_OUTPUT}`, `/flamegraph.html`)
+            fs.writeFileSync(folder, src);
+            logger(`Saved to ${folder} `);
             return resolve()
         }))
     })
-}
-
-function humanFileSize(size) {
-    const i = Math.floor(Math.log(size) / Math.log(1024));
-    return Math.round(100 * (size / Math.pow(1024, i))) / 100 + ' ' + ['B', 'kB', 'MB'][i];
 }
 
 module.exports = {

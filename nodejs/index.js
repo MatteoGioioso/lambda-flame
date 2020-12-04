@@ -4,6 +4,7 @@ const {
     LAMBDA_TASK_ROOT,
     _HANDLER,
 } = process.env
+const {logger} = require('./logger')
 const runtimeAPI = new RuntimeAPI()
 
 start()
@@ -24,7 +25,7 @@ async function tryProcessEvents(handler) {
         await processEvents(handler)
         process.exit(0)
     } catch (e) {
-        console.error(e)
+        logger(e.message, e.stack)
         return process.exit(1)
     }
 }
@@ -42,7 +43,7 @@ async function processEvents(handler) {
         // const callbackUsed = context[CALLBACK_USED]
 
         await runtimeAPI.invokeResponse(result, context)
-        console.log("exiting...")
+        logger("exiting...")
         return process.prependOnceListener('beforeExit', () => tryProcessEvents(handler))
     }
 }
