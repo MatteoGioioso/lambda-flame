@@ -19,10 +19,8 @@ sam deploy --profile "${PROFILE}" --region "${REGION}" \
   --template-file output.yaml \
   --stack-name "${PROJECT}" \
   --capabilities CAPABILITY_IAM \
-  --parameter-overrides \
-  Environment="${ENV}" \
-  Version=1.0.0
 
 sam publish \
     --template output.yaml \
-    --region "${REGION}"
+    --region "${REGION}" \
+    --semantic-version 1.0.0

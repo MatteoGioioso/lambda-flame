@@ -2,10 +2,6 @@ AWSTemplateFormatVersion: "2010-09-09"
 Transform: "AWS::Serverless-2016-10-31"
 Description: "Extract flame graph for Nodejs directly from lambda function"
 
-Parameters:
-  Version:
-    Type: String
-
 Metadata:
   AWS::ServerlessRepo::Application:
     Name: lambda-flame
@@ -16,7 +12,6 @@ Metadata:
     ReadmeUrl: README.md
     Labels: ['lambda', 'nodejs', 'debugging']
     HomePageUrl: https://github.com/MatteoGioioso/lambda-flame-js
-    SemanticVersion: !Ref Version
     SourceCodeUrl: https://github.com/MatteoGioioso/lambda-flame-js
 
 Resources:
