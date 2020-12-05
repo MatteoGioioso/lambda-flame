@@ -1,0 +1,30 @@
+AWSTemplateFormatVersion: "2010-09-09"
+Transform: "AWS::Serverless-2016-10-31"
+Description: "Extract flame graph for Nodejs directly from lambda function"
+
+Metadata:
+  AWS::ServerlessRepo::Application:
+    Name: lambda-flame
+    Description: Extract flame graph for Nodejs directly from lambda function
+    Author: Matteo Gioioso
+    SpdxLicenseId: MIT
+    LicenseUrl: LICENSE
+    ReadmeUrl: README.md
+    Labels: ['lambda', 'nodejs', 'debugging']
+    HomePageUrl: https://github.com/MatteoGioioso/lambda-flame-js
+    SourceCodeUrl: https://github.com/MatteoGioioso/lambda-flame-js
+
+Resources:
+  LambdaFlame:
+    Type: AWS::Serverless::LayerVersion
+    Properties:
+      LayerName: lambda-flame
+      Description: Extract flame graph for Nodejs directly from lambda function
+      ContentUri: lib/.
+      LicenseInfo: MIT
+      CompatibleRuntimes:
+        - nodejs12.x
+
+Outputs:
+  LayerArn:
+    Value: !Ref LambdaFlame

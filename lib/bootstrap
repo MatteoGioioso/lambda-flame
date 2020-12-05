@@ -5,7 +5,7 @@ echo "[LAMBDA FLAME] Starting custom runtime..."
 
 if [ -z "$NODE_RUNTIME_PATH" ];
 then
-    export NODE_RUNTIME_PATH=nodejs/node
+    export NODE_RUNTIME_PATH=/opt/nodejs/node
 fi
 
 export LAMBDA_FLAME_OUTPUT=lambda-flame-output
@@ -14,10 +14,10 @@ mkdir /tmp/"$LAMBDA_FLAME_OUTPUT"
 
 collect() {
     $NODE_RUNTIME_PATH --prof-process --preprocess -j /tmp/"$LAMBDA_FLAME_OUTPUT"/isolate*.log >> /tmp/"$LAMBDA_FLAME_OUTPUT"/isolate-output.json
-    $NODE_RUNTIME_PATH nodejs/Collector.js
+    $NODE_RUNTIME_PATH /opt/nodejs/Collector.js
 }
 
-export NODE_PATH=/var/task/node_modules:/var/node_modules:/node_modules:/nodejs/node_modules:/var/runtime:/var/task:/var/runtime/node_modules:/node/node_modules
-"$NODE_RUNTIME_PATH" --prof --logfile=/tmp/"$LAMBDA_FLAME_OUTPUT"/lambda.log nodejs/index.js
+export NODE_PATH=/var/task/node_modules:/var/node_modules:/node_modules:/opt/nodejs/node_modules:/var/runtime:/var/task:/var/runtime/node_modules:/opt/node/node_modules
+"$NODE_RUNTIME_PATH" --prof --logfile=/tmp/"$LAMBDA_FLAME_OUTPUT"/lambda.log /opt/nodejs/index.js
 
 trap collect EXIT

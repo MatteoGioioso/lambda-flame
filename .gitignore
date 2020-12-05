@@ -1,8 +1,4 @@
 .idea
 .aws-sam
-output.yaml
-template.yaml
-deploy.sh
-handler.js
 node_modules
-request.http
+output.yaml
