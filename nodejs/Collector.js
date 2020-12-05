@@ -17,6 +17,7 @@ class Collector {
             fs.readdirSync(path).forEach((file, index) => {
                 const curPath = Path.join(path, file);
                 fs.unlinkSync(curPath);
+                logger(`${file} deleted`)
             });
             fs.rmdirSync(path);
         }
@@ -24,18 +25,29 @@ class Collector {
     }
 
     async sendToDest(){
+        const requests = [];
         const hash = Date.now().toString()
-        const data = fs.readFileSync(`${this.OUTPUT_PATH}/flamegraph.html`)
 
+        fs.readdirSync(this.OUTPUT_PATH).forEach((file, index) => {
+            const curPath = Path.join(this.OUTPUT_PATH, file)
+            const data = fs.readFileSync(curPath)
+            const key = `${hash}/${file}`
+            requests.push(this.uploadToS3(key, data))
+        });
+
+        await Promise.all(requests)
+        logger("Flamegraph upload completed!")
+    }
+
+    async uploadToS3(key, data){
         const params = {
             Bucket: process.env.LAMBDA_FLAME_DEST_BUCKET,
-            Key: `flamegraph_${hash}.html`,
+            Key: key,
             Body: data,
         };
 
         const res = await s3Client.upload(params).promise()
-        logger("Flamegraph was send to S3")
-        logger(res)
+        logger(res.Key + " uploaded")
     }
 
     async generateFlameGraph(){

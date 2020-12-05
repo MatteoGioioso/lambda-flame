@@ -1,6 +1,6 @@
 function logger(message) {
     if (process.env.LAMBDA_FLAME_DEBUG === "ALL") {
-        console.log("[LAMBDA FLAME]: ", JSON.stringify(message, null, 2))
+        console.log("[LAMBDA FLAME]: ", JSON.stringify(message))
     }
 }
 
