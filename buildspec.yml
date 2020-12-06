@@ -1,0 +1,15 @@
+version: 0.2
+
+env:
+  secrets-manager:
+    LOCAL_SECRET_VAR: "GITHUB_TOKEN:lambda-flame:github"
+
+phases:
+  install:
+    runtime-versions:
+      nodejs: 13
+    commands:
+      - (cd lib/nodejs && npm install) && npm install
+  build:
+    commands:
+      - GITHUB_TOKEN=${GITHUB_TOKEN} ENV=${ENV} APPNAME=${APPNAME} REGION=${REGION} ./deploy.sh
