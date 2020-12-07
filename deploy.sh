@@ -1,11 +1,18 @@
 #!/bin/bash
 
-PROJECT=${APPNAME}
-BUCKET=${PROJECT}-artifacts
-REGION=${REGION}
-TEMPLATE_NAME=template
+export PROJECT=${APPNAME}
+export BUCKET=${PROJECT}-artifacts
+export REGION=${REGION}
+export TEMPLATE_NAME=template
+export GITHUB_TOKEN=${GITHUB_TOKEN}
+export ENV=${ENV}
 
-aws --region "${REGION}" s3 mb s3://"${BUCKET}"
+echo environmen "$ENV"
+echo region "$REGION"
+
+set -e
+set -u
+set -o pipefail
 
 sam package --region "${REGION}"  \
   --template-file ${TEMPLATE_NAME}.yaml \
