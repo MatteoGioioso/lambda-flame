@@ -7,7 +7,7 @@ export TEMPLATE_NAME=template
 export GITHUB_TOKEN=${GITHUB_TOKEN}
 export ENV=${ENV}
 
-echo environmen "$ENV"
+echo environment "$ENV"
 echo region "$REGION"
 
 set -e

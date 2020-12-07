@@ -2,6 +2,8 @@
 
 const semanticRelease = require('semantic-release');
 
+console.log("Environment: ", process.env.ENV)
+
 async function release() {
   try {
     const result = await semanticRelease({
@@ -11,7 +13,7 @@ async function release() {
       ],
       repositoryUrl: 'https://github.com/MatteoGioioso/lambda-flame.git',
       dryRun: process.env.ENV === 'dev',
-      ci: process.env.ENV !== 'dev',
+      ci: true,
       npmPublish: false
     }, {
       env: {
