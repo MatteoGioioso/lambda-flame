@@ -1,6 +1,7 @@
 version: 0.2
 
 env:
+  git-credential-helper: yes
   secrets-manager:
     GITHUB_TOKEN: "lambda-flame:github"
 

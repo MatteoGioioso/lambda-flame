@@ -27,6 +27,7 @@ sam deploy --region "${REGION}" \
 
 node release.js
 VERSION=$(cat version)
+echo "next version: $VERSION"
 
 sam publish \
     --template output.yaml \
