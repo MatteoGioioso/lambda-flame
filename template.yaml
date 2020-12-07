@@ -11,8 +11,8 @@ Metadata:
     LicenseUrl: LICENSE
     ReadmeUrl: README.md
     Labels: ['lambda', 'nodejs', 'debugging']
-    HomePageUrl: https://github.com/MatteoGioioso/lambda-flame-js
-    SourceCodeUrl: https://github.com/MatteoGioioso/lambda-flame-js
+    HomePageUrl: https://github.com/MatteoGioioso/lambda-flame
+    SourceCodeUrl: https://github.com/MatteoGioioso/lambda-flame
 
 Resources:
   LambdaFlame:

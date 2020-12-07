@@ -9,7 +9,7 @@ async function release() {
       branches: [
         'master',
       ],
-      repositoryUrl: 'https://github.com/MatteoGioioso/lambda-flame-js.git',
+      repositoryUrl: 'https://github.com/MatteoGioioso/lambda-flame.git',
       dryRun: process.env.ENV === 'dev',
       ci: process.env.ENV !== 'dev',
       npmPublish: false

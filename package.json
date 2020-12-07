@@ -1,5 +1,5 @@
 {
-  "name": "lambda-flame-js",
+  "name": "lambda-flame",
   "version": "1.0.0",
   "description": "Extract flame graph for Nodejs directly from an AWS lambda function",
   "main": "index.js",
@@ -11,15 +11,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/MatteoGioioso/lambda-flame-js.git"
+    "url": "git+https://github.com/MatteoGioioso/lambda-flame.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/MatteoGioioso/lambda-flame-js/issues"
+    "url": "https://github.com/MatteoGioioso/lambda-flame/issues"
   },
-  "homepage": "https://github.com/MatteoGioioso/lambda-flame-js#readme",
+  "homepage": "https://github.com/MatteoGioioso/lambda-flame#readme",
   "dependencies": {
     "semantic-release": "^17.3.0"
   }
