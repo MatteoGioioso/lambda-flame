@@ -25,7 +25,8 @@ sam deploy --region "${REGION}" \
   --stack-name "${PROJECT}" \
   --capabilities CAPABILITY_IAM \
 
-VERSION=$(node release.js)
+node release.js
+VERSION=$(cat version)
 
 sam publish \
     --template output.yaml \
