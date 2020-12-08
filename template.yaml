@@ -10,7 +10,7 @@ Metadata:
     SpdxLicenseId: MIT
     LicenseUrl: LICENSE
     ReadmeUrl: README.md
-    Labels: ['lambda', 'nodejs', 'debugging']
+    Labels: ['lambda', 'nodejs', 'debugging', 'profiling', 'diagnostic', 'serverless']
     HomePageUrl: https://github.com/MatteoGioioso/lambda-flame
     SourceCodeUrl: https://github.com/MatteoGioioso/lambda-flame
 
