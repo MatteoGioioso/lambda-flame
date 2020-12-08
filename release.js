@@ -1,7 +1,15 @@
 #!/usr/bin/env node
 
-const semanticRelease = require('semantic-release');
+const execa = require('execa')
+const semanticRelease = require('semantic-release')
+const getBranches = require('semantic-release/lib/branches')
 const fs = require('fs')
+
+async function fetch() {
+  const {stdout} = await execa('git', ['tag', '--points-at', 'HEAD'])
+  return stdout
+}
+
 
 console.log("Environment: ", process.env.ENV)
 
@@ -23,8 +31,11 @@ async function release() {
     },
   });
 
+  let version;
+
   if (result) {
     const {lastRelease, commits, nextRelease, releases} = result;
+    version = nextRelease.version
 
     console.log(`Published ${nextRelease.type} release version ${nextRelease.version} containing ${commits.length} commits.`);
 
@@ -36,11 +47,13 @@ async function release() {
       console.log(`The release was published with plugin "${release.pluginName}".`);
     }
   } else {
-    console.log('No release published.');
+    const tag = await fetch()
+    const version = tag.replace('v', '')
+    console.log(`No release published. Current version: ${version}`);
+    return version
   }
 
-  const {nextRelease} = result;
-  return nextRelease.version
+  return version
 }
 
 release().then(v => {

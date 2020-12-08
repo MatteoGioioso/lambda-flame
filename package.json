@@ -21,6 +21,7 @@
   },
   "homepage": "https://github.com/MatteoGioioso/lambda-flame#readme",
   "dependencies": {
+    "execa": "^4.1.0",
     "semantic-release": "^17.3.0"
   }
 }
