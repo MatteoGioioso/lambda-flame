@@ -2,7 +2,6 @@
 
 const execa = require('execa')
 const semanticRelease = require('semantic-release')
-const getBranches = require('semantic-release/lib/branches')
 const fs = require('fs')
 
 async function fetch() {
