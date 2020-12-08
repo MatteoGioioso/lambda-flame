@@ -5,7 +5,7 @@ Lambda flame is a custom Nodejs runtime that collects and creates a flame graph 
 
 ## Usage
 
-## Deployment
+### Deployment
 
 The first thing is to deploy the Serverless application into your account.
 You can do it via the AWS console: [lambda-flame](https://serverlessrepo.aws.amazon.com/applications/ap-southeast-1/164102481775/lambda-flame),
@@ -19,23 +19,17 @@ or directly into Cloudformation: (**make sure you specify the latest version**)
         SemanticVersion: 1.0.0
 ```
 
-## Setup
+### Setup
 After the application has been deployed go to the `serverlessrepo-lambda-flame` cloudformation stack and copy the layer arn.
-Paste the layer arn into your function layer:
+Paste the layer arn into your function layer.
+SAM/Cloudformation:
 
 ```yaml
-
 AWSTemplateFormatVersion: "2010-09-09"
 Transform: "AWS::Serverless-2016-10-31"
 Description: "Lambda flame test template"
 
-Globals:
-  Function:
-
-
 Resources:
-
-  # FUNCTIONS ==========================================
   ExampleFunction:
     Type: AWS::Serverless::Function
     Properties:
@@ -68,6 +62,39 @@ Resources:
 
 ```
 
+Serverless framework:
+
+```yaml
+provider:
+  name: aws
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "s3:PutObject"
+      Resource:
+        - !GetAtt FlameBucket.Arn
+        
+functions:
+  exampleFunction:
+    memorySize: 1024
+    timeout: 30
+    handler: handler.hello
+    runtime: provided
+    environment:
+      LAMBDA_FLAME_DEST_BUCKET: !Ref FlameBucket
+      LAMBDA_FLAME_DEBUG: ALL
+    layers:
+      - arn:aws:lambda:ap-southeast-1:0123456789:layer:lambda-flame:9 // Layer arn from the Lambda Flame application
+
+resources:
+  Resources:
+    FlameBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: lambda-flame-graph-test
+
+```
+
 Some important things:
 
 - The `Runtime` property **must be set to `provided`**
@@ -79,7 +106,7 @@ lambda flame will name space all the output files under `s3://<your-bucket-name>
 if you want to make it a bit faster just temporarily add more memory
 - **This tool (for the time being) is not meant to run in a production environment use it as a debugging purposes only**
 
-## Run
+### Run
 After the invocation of your function has terminated, you can navigate to your S3 Bucket under `s3://<your-bucket-name>/lambda-flame/<function-name>/<epoch timestamp>/`
 and open the `flamegraph.html`
 
