@@ -1,4 +1,4 @@
-# LAMBDA FLAMEhttps://github.com/MatteoGioioso
+# LAMBDA FLAME
 
 Extract flame graph for Nodejs directly from an AWS lambda function.
 Lambda flame is a custom Nodejs runtime that collects and creates a flame graph of your lambda function process.
