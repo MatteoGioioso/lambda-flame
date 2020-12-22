@@ -1,4 +1,4 @@
-# LAMBDA FLAME
+![lambda-flame](docs/logo.png)
 
 Extract flame graph for Nodejs directly from an AWS lambda function.
 Lambda flame is a custom Nodejs runtime that collects and creates a flame graph of your lambda function process.
@@ -20,9 +20,14 @@ or directly into Cloudformation: (**make sure you specify the latest version**)
 ```
 
 ### Setup
-After the application has been deployed go to the `serverlessrepo-lambda-flame` cloudformation stack and copy the layer arn.
-Paste the layer arn into your function layer.
-SAM/Cloudformation:
+After the application has been deployed go to the lambda console, 
+click on layers and copy the lambda-flame layer arn; 
+
+![layers](./docs/lambda-flame-after-deploy.png)
+
+
+#### SAM/Cloudformation
+You can now paste the layer in your SAM/Cloudformation template:
 
 ```yaml
 AWSTemplateFormatVersion: "2010-09-09"
@@ -47,7 +52,7 @@ Resources:
         - S3WritePolicy: // Or simply s3:PutObject
             BucketName: !Ref FlameBucket
       Layers:
-        - arn:aws:lambda:ap-southeast-1:0123456789:layer:lambda-flame:9 // Layer arn from the Lambda Flame application
+        - !Sub arn:aws:lambda:ap-southeast-1:{AWS::AccountId}:layer:lambda-flame:13 // Layer arn from the Lambda Flame application
       Events:
         HTTP:
           Type: Api
@@ -62,29 +67,42 @@ Resources:
 
 ```
 
-Serverless framework:
+#### Serverless framework
+Paste the arn in your `serverless.yaml`:
 
 ```yaml
+service: lambda-flame-test-sls
+
 provider:
   name: aws
+  stackName: lambda-flame-test-sls
+  region: ap-southeast-1
   iamRoleStatements:
-    - Effect: "Allow"
+    - Effect: Allow
       Action:
-        - "s3:PutObject"
+        - s3:PutObject
       Resource:
-        - !GetAtt FlameBucket.Arn
+        - arn:aws:s3:::lambda-flame-graph-test
+        - arn:aws:s3:::lambda-flame-graph-test/*
+
+package:
+  individually: true
         
 functions:
   exampleFunction:
     memorySize: 1024
     timeout: 30
-    handler: handler.hello
+    handler: handler.handler
     runtime: provided
     environment:
-      LAMBDA_FLAME_DEST_BUCKET: !Ref FlameBucket
+      LAMBDA_FLAME_DEST_BUCKET: lambda-flame-graph-test
       LAMBDA_FLAME_DEBUG: ALL
     layers:
-      - arn:aws:lambda:ap-southeast-1:0123456789:layer:lambda-flame:9 // Layer arn from the Lambda Flame application
+      - !Sub arn:aws:lambda:ap-southeast-1:${AWS::AccountId}:layer:lambda-flame:13
+    events:
+      - http:
+          method: get
+          path: /
 
 resources:
   Resources:
@@ -95,7 +113,20 @@ resources:
 
 ```
 
-Some important things:
+If you are using the **webpack plugin**, the custom runtime option will not work for versions < 5.4.0
+Just add the `allowCustomRuntime: true` option to your function:
+
+```yaml
+  exampleFunction:
+    handler: handler.handler
+    runtime: provided
+    allowCustomRuntime: true
+    layers:
+      - !Sub arn:aws:lambda:ap-southeast-1:${AWS::AccountId}:layer:lambda-flame:13
+     ...
+```
+
+### Some important notes:
 
 - The `Runtime` property **must be set to `provided`**
 - All the result of the v8 profiling and the flamegraph creation will be sent to an S3 bucket of your choice. You **must specify a valid S3 Bucket name**. 
@@ -104,13 +135,13 @@ lambda flame will name space all the output files under `s3://<your-bucket-name>
 - In order to send the profiling output and flame graph files to your S3 bucket **make sure you have the required write permissions `s3:PutObject`** 
 - The v8 profile output processing happens outside your handler invocation therefore it won't impact your function profiling. However, is a CPU bound operation, 
 if you want to make it a bit faster just temporarily add more memory
-- **This tool (for the time being) is not meant to run in a production environment use it as a debugging purposes only**
+- **This tool (for the time being) is not meant to run in a production environment, use it as a debugging purposes only**
 
 ### Run
 After the invocation of your function has terminated, you can navigate to your S3 Bucket under `s3://<your-bucket-name>/lambda-flame/<function-name>/<epoch timestamp>/`
 and open the `flamegraph.html`
 
-![flamegraph.html](docs/flame-graph.png)
+![example flamegraph.html](docs/flame-graph.png)
 
 
 ## Config
@@ -133,4 +164,4 @@ There are a lot of new features I want to add, feel free to contribute, open iss
 
 ## Notice
 This tool (for the time being) is partially using a modified version [flamebearer](https://github.com/mapbox/flamebearer) all the credits goes to the [author](https://www.mapbox.com/) of this library.
-In the future I am planning to build a custom visualization similar to [Clinic flame](https://clinicjs.org/flame/)
+In the future I am planning to build a custom visualization similar to [Clinic flame](https://clinicjs.org/flame/).
