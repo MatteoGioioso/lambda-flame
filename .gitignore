@@ -2,3 +2,14 @@
 .aws-sam
 node_modules
 output.yaml
+testTemplate.yaml
+deploy-test.sh
+handler.js
+testOutput.yaml
+request.http
+.DS_Store
+isolate*
+handlerSub.js
+Makefile
+.babelrc
+.serverless

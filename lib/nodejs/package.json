@@ -18,6 +18,10 @@
   },
   "homepage": "https://github.com/MatteoGioioso/lambda-flame#readme",
   "dependencies": {
+    "@babel/core": "^7.12.10",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10",
     "aws-sdk": "^2.803.0",
     "concat-stream": "^2.0.0"
   }

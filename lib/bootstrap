@@ -8,7 +8,7 @@ if [ -z "$NODE_RUNTIME_PATH" ]; then
 fi
 
 if [ -n "$AWS_LAMBDA_FUNCTION_MEMORY_SIZE" ]; then
-  new_space=$(("$AWS_LAMBDA_FUNCTION_MEMORY_SIZE" / 10))
+  new_space=$(($AWS_LAMBDA_FUNCTION_MEMORY_SIZE / 10))
   semi_space=$((new_space / 2))
   old_space=$((AWS_LAMBDA_FUNCTION_MEMORY_SIZE - new_space))
   MEMORY_ARGS=(

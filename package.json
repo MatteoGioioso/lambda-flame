@@ -22,6 +22,16 @@
   "homepage": "https://github.com/MatteoGioioso/lambda-flame#readme",
   "dependencies": {
     "execa": "^4.1.0",
-    "semantic-release": "^17.3.0"
+    "semantic-release": "^17.3.0",
+    "serverless": "^2.20.1"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.12.10",
+    "@babel/core": "^7.12.10",
+    "@babel/plugin-transform-runtime": "^7.12.10",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.12.11",
+    "@babel/register": "^7.12.10",
+    "@babel/runtime": "^7.12.5"
   }
 }

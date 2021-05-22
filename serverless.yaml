@@ -1,0 +1,37 @@
+service: lambda-flame-test-sls
+
+provider:
+  name: aws
+  stackName: lambda-flame-test-sls
+  region: ap-southeast-1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - s3:PutObject
+      Resource:
+        - arn:aws:s3:::lambda-flame-graph-test
+        - arn:aws:s3:::lambda-flame-graph-test/*
+
+package:
+  individually: true
+  excludeDevDependencies: false
+
+plugins:
+  - serverless-plugin-include-dependencies
+
+functions:
+  exampleFunction:
+    memorySize: 1024
+    timeout: 30
+    handler: handler.handler
+    runtime: provided
+
+    environment:
+      LAMBDA_FLAME_DEST_BUCKET: lambda-flame-graph-test
+      LAMBDA_FLAME_DEBUG: ALL
+    layers:
+      - !Sub arn:aws:lambda:ap-southeast-1:024150966935:layer:lambda-flame-local:13
+    events:
+      - http:
+          method: get
+          path: /
